@@ -1,5 +1,4 @@
-import Image from "next/image";
-import React from "react";
+import { FaCartShopping } from "react-icons/fa6";
 
 export default function Header() {
     return (
@@ -21,21 +20,21 @@ export default function Header() {
                 </div>
                 <nav>
                     <ul className="flex space-x-4 text-white font-medium">
-                        <li className="hover:text-gray-300 cursor-pointer">
-                            Inicio
-                        </li>
-                        <li className="hover:text-gray-300 cursor-pointer">
-                            Catálogo
-                        </li>
-                        <li className="hover:text-gray-300 cursor-pointer">
-                            Servicios
-                        </li>
-                        <li className="hover:text-gray-300 cursor-pointer">
-                            Eventos
-                        </li>
-                        <li className="hover:text-gray-300 cursor-pointer">
-                            Contacto
-                        </li>
+                        <a href="/">
+                            <li className="hover:text-gray-300 cursor-pointer">
+                                Inicio
+                            </li>
+                        </a>
+
+                        <a href="/catalog">
+                            <li className="hover:text-gray-300 cursor-pointer">
+                                Catálogo
+                            </li>
+                        </a>
+                        <a href="/">
+                        <FaCartShopping />
+
+                        </a>
                     </ul>
                 </nav>
             </section>

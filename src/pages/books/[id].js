@@ -1,44 +1,8 @@
 "use client";
 
 import { useParams } from "next/navigation";
-import Image from "next/image";
 import { Star, ShoppingCart, BookOpen } from "lucide-react";
-
-const bookDetails = [
-    {
-        id: 1,
-        title: "El Principito",
-        author: "Antoine de Saint-Exupéry",
-        cover: "https://www.laesferaazul.com/wp-content/uploads/2022/09/Descubrir-el-Principito-scaled.jpg",
-        rentalPrice: "$5",
-        salePrice: "$20",
-        description:
-            "Una historia sobre un pequeño príncipe que viaja por el universo...",
-        rating: 4.5,
-        reviews: [
-            {
-                user: "Carlos",
-                comment: "Un libro maravilloso, muy conmovedor.",
-            },
-            { user: "Ana", comment: "Una obra maestra que todos deben leer." },
-        ],
-    },
-    {
-        id: 2,
-        title: "1984",
-        author: "George Orwell",
-        cover: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTVrq2RIC2cWWHMnrvruHzvyMepMNCGRau8PA&s",
-        rentalPrice: "$6",
-        salePrice: "$22",
-        description:
-            "Una novela distópica que presenta un futuro totalitario. Una novela distópica que presenta un futuro totalitario.Una novela distópica que presenta un futuro totalitario.Una novela distópica que presenta un futuro totalitario.Una novela distópica que presenta un futuro totalitario.Una novela distópica que presenta un futuro totalitario.Una novela distópica que presenta un futuro totalitario.Una novela distópica que presenta un futuro totalitario.Una novela distópica que presenta un futuro totalitario.Una novela distópica que presenta un futuro totalitario.Una novela distópica que presenta un futuro totalitario.Una novela distópica que presenta un futuro totalitario.Una novela distópica que presenta un futuro totalitario.Una novela distópica que presenta un futuro totalitario.",
-        rating: 4.7,
-        reviews: [
-            { user: "Pedro", comment: "Muy impactante, te hace reflexionar." },
-            { user: "Laura", comment: "Un clásico de la literatura." },
-        ],
-    },
-];
+import { books, reviews } from "@/components/Books/Bookjson";
 
 function StarRating({ rating }) {
     return (
@@ -65,7 +29,9 @@ function StarRating({ rating }) {
 export default function BookDetail() {
     const params = useParams();
     const id = parseInt(params.id);
-    const book = bookDetails.find((b) => b.id === id);
+    const book = books.find((b) => b.id === id);
+    const bookReviews = reviews.filter((review) => review.bookId === book.id);
+
 
     if (!book) {
         return (
@@ -80,7 +46,7 @@ export default function BookDetail() {
             <div className="flex flex-col md:flex-row ">
                 <div className="md:w-1/1 w-48 mr-10">
                     <img
-                        src={book.cover}
+                        src={book.image}
                         alt={book.title}
                         className="w-max  rounded-lg shadow-l "
                     />
@@ -92,7 +58,6 @@ export default function BookDetail() {
                     <h2 className="text-xl text-warm-gray mb-4">
                         {book.author}
                     </h2>
-                    <StarRating rating={book.rating} />
                     <p className="mt-4 text-text-primary break-words">
                         {book.description}
                     </p>
@@ -102,7 +67,7 @@ export default function BookDetail() {
                                 Precio de alquiler
                             </p>
                             <p className="text-2xl font-bold text-library-green">
-                                {book.rentalPrice}
+                                ${book.rentalPrice}
                             </p>
                         </div>
                         <div>
@@ -110,7 +75,7 @@ export default function BookDetail() {
                                 Precio de venta
                             </p>
                             <p className="text-2xl font-bold text-library-green">
-                                {book.salePrice}
+                                ${book.salePrice}
                             </p>
                         </div>
                     </div>
@@ -128,22 +93,24 @@ export default function BookDetail() {
                         Reseñas
                     </h3>
                     <div className="space-y-4">
-                        {book.reviews.map((review, index) => (
+                        {bookReviews.map((review, index) => (
                             <div
                                 key={index}
                                 className="p-6 border rounded-lg shadow-sm bg-white"
                             >
                                 <div className="flex items-start space-x-4">
-                                    <div className="flex justify-center items-center w-10 h-10 rounded-full bg-library-green text-white">
-                                        {review.user[0]}
-                                    </div>
+                                    <img src={review.image} className="flex justify-center items-center w-10 h-10 rounded-full bg-library-green text-white"/>
+                                        
+                                    
                                     <div className="flex-1">
                                         <p className="font-semibold text-text-primary">
                                             {review.user}
                                         </p>
                                         <p className="text-text-secondary mt-1">
-                                            {review.comment}
+                                            {review.review}
                                         </p>
+                                        <StarRating rating={review.rating} />
+
                                     </div>
                                 </div>
                             </div>
