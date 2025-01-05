@@ -1,11 +1,8 @@
-import React from 'react'
+import React from "react";
+import Home from "./home/Home";
 
 const index = () => {
-  return (
-    <div>
-      <h1>HOLA MUNDO</h1>
-    </div>
-  )
-}
+    return <Home />;
+};
 
-export default index
+export default index;
