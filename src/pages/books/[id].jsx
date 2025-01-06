@@ -42,13 +42,13 @@ export default function BookDetail() {
     }
 
     return (
-        <div className="w-screen max-w-full px-52 py-8 overflow-x-hidden">
+        <div className=" bg-[var(--background-main)] w-screen max-w-full px-52 py-14 overflow-x-hidden">
             <div className="flex flex-col md:flex-row ">
                 <div className="md:w-1/1 w-48 mr-10">
                     <img
                         src={book.image}
                         alt={book.title}
-                        className="w-max  rounded-lg shadow-l "
+                        className="w-max  rounded-lg shadow-l object-cover"
                     />
                 </div>
                 <div className="md:w-1/2">
