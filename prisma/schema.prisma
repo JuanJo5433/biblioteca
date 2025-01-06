@@ -13,17 +13,57 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model Users {
+  id             Int        @id @default(autoincrement())
+  name           String
+  lastName       String
+  email          String      @unique
+  password       String
+  role           String
+  adminId        Int 
+  admin          Admins      @relation(fields: [adminId], references: [id])
+  clientId       Int 
+  client         Clients     @relation(fields: [clientId], references: [id])
+  librarianId    Int 
+  librarian      Librarians  @relation(fields: [librarianId], references: [id])
+  createdAt      DateTime    @default(now())
+  updatedAt      DateTime    @updatedAt
+}
 
-model Clients {
-  id             Int       @id @default(autoincrement())
+
+model Admins {
+  id             Int        @id @default(autoincrement())
   name           String
   lastName       String
   documentType   String
   codeDocument   Int 
   address        String
   phone          String
-  email          String      @unique
+  Users          Users[]
+  createdAt      DateTime    @default(now())
+  updatedAt      DateTime    @updatedAt
+}
+
+
+model Librarians {
+  id              Int         @id @default(autoincrement())
+  name            String
+  charge          String
+  phone           String
+  workingHours    String
+  Users           Users[]
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+}
+
+model Clients {
+  id             Int       @id @default(autoincrement())
+  documentType   String
+  codeDocument   Int 
+  address        String
+  phone          String
   Loans          Loans[]
+  Users          Users[]
   createdAt      DateTime    @default(now())
   updatedAt      DateTime    @updatedAt
 }
@@ -63,19 +103,6 @@ model Authors {
   Books       Books[]
 }
 
-
-model Librarians {
-  id              Int         @id @default(autoincrement())
-  name            String
-  charge          String
-  email           String      @unique
-  phone           String
-  workingHours    String
-  createdAt       DateTime    @default(now())
-  updatedAt       DateTime    @updatedAt
-}
-
-
 model Loans {
   id                          Int         @id @default(autoincrement())
   loanDate                    DateTime
@@ -91,18 +118,7 @@ model Loans {
   updatedAt      DateTime     @updatedAt
 }
 
-model Admin {
-  id             Int        @id @default(autoincrement())
-  name           String
-  lastName       String
-  documentType   String
-  codeDocument   Int 
-  address        String
-  phone          String
-  email          String      @unique
-  createdAt      DateTime    @default(now())
-  updatedAt      DateTime    @updatedAt
-}
+
 
 
 
