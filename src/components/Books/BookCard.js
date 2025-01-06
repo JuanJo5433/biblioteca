@@ -24,7 +24,7 @@ export function BookCard(props) {
                             "https://images.cdn1.buscalibre.com/fit-in/360x360/07/b1/07b1ebdde976fdf929f75769f19efb42.jpg"
                         }
                         alt={book.title}
-                        className="h-3/5 object-cover w-full rounded-t-lg line-clamp-1"
+                        className="h-3/5 object-container w-full rounded-t-lg line-clamp-1  "
                     />
                     <h3 className="text-lg font-bold mt-4 text-espresso-brown">
                         {book.title}
