@@ -1,8 +1,7 @@
 "use client";
 
-import { useParams } from "next/navigation";
 import { Star, ShoppingCart, BookOpen } from "lucide-react";
-import { books, reviews } from "@/components/Books/Bookjson";
+import { books , reviews } from "@/components/Books/Bookjson";
 
 function StarRating({ rating }) {
     return (
@@ -26,10 +25,10 @@ function StarRating({ rating }) {
     );
 }
 
-export default function BookDetail() {
-    const params = useParams();
-    const id = parseInt(params.id);
-    const book = books.find((b) => b.id === id);
+export default function BookDetail({slug}) {
+   
+
+    const book = books.find((b) => b.slug === slug);
     const bookReviews = reviews.filter((review) => review.bookId === book.id);
 
 
@@ -121,3 +120,18 @@ export default function BookDetail() {
         </div>
     );
 }
+
+export async function getServerSideProps(context) {
+
+    const {slug} = context.params;
+
+    return {
+        props: {
+            slug: slug,
+        }
+    }
+
+
+
+}
+

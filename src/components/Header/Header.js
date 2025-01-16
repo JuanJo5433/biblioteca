@@ -14,14 +14,14 @@ export default function Header() {
             {/* Contenido del header */}
             <section className="relative z-10 flex justify-between items-center p-6">
                 <div className="flex items-center">
-                    <h1 className="ml-3 font-bold text-4xl text-parchment-cream color">
+                    <h1 className="ml-3 font-bold text-4xl text-parchment-cream ">
                         Biblioteca Elegante
                     </h1>
                 </div>
                 <nav>
                     <ul className="flex space-x-4 text-white font-medium">
                         <a href="/">
-                            <li className="hover:text-gray-300 cursor-pointer">
+                            <li className="hover:text-gray-300 cursor-pointer ">
                                 Inicio
                             </li>
                         </a>
@@ -31,7 +31,7 @@ export default function Header() {
                                 Catálogo
                             </li>
                         </a>
-                        <a href="/">
+                        <a href="/cart">
                         <FaCartShopping />
 
                         </a>
@@ -41,10 +41,10 @@ export default function Header() {
 
             {/* Sección inferior: Título y subtítulo */}
             <section className="relative mb-10 z-10 flex flex-col items-center justify-center text-center text-white">
-                <h2 className="text-3xl font-bold">
+                <h2 className="text-3xl font-bold text-parchment-cream ">
                     Descubre Mundos Infinitos
                 </h2>
-                <p className="text-lg mt-2">
+                <p className="text-lg mt-2 text-parchment-cream  ">
                     Tu puerta a la sabiduría y la imaginación
                 </p>
             </section>

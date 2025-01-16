@@ -11,6 +11,7 @@ export const books = [
 
         rentalPrice: 12,
         salePrice: 123,
+        slug: "cien-anos-de-soledad",
     },
     {
         id: 2,
@@ -23,6 +24,7 @@ export const books = [
 
         rentalPrice: 12,
         salePrice: 123,
+        slug: "el-principito",
     },
     {
         id: 3,
@@ -35,6 +37,7 @@ export const books = [
 
         rentalPrice: 12,
         salePrice: 123,
+        slug: "sapiens-de-animales-a-dioses",
     },
     {
         id: 4,
@@ -47,6 +50,7 @@ export const books = [
 
         rentalPrice: 12,
         salePrice: 123,
+        slug: "una-breve-hitoria-del-tiempo",
     },
     {
         id: 5,
@@ -59,6 +63,7 @@ export const books = [
 
         rentalPrice: 12,
         salePrice: 123,
+        slug: "el-diario-de-ana-frank",
     },
     {
         id: 6,
@@ -71,6 +76,7 @@ export const books = [
 
         rentalPrice: 12,
         salePrice: 123,
+        slug: "steve-jobs",
     },
 
     // FICCIÓN
@@ -85,6 +91,7 @@ export const books = [
 
         rentalPrice: 12,
         salePrice: 123,
+        slug: "1984",
     },
     {
         id: 8,
@@ -97,6 +104,7 @@ export const books = [
 
         rentalPrice: 12,
         salePrice: 123,
+        slug: "orgullo-y-prejuicio",
     },
     {
         id: 9,
@@ -109,6 +117,7 @@ export const books = [
 
         rentalPrice: 12,
         salePrice: 123,
+        slug: "el-gran-gatsby",
     },
     {
         id: 10,
@@ -121,6 +130,7 @@ export const books = [
 
         rentalPrice: 12,
         salePrice: 123,
+        slug: "crimen-y-castigo",
     },
 
     // NO FICCIÓN
@@ -135,6 +145,7 @@ export const books = [
 
         rentalPrice: 12,
         salePrice: 123,
+        slug: "el-hombre-en-busca-de-sentido",
     },
     {
         id: 14,
@@ -147,6 +158,7 @@ export const books = [
 
         rentalPrice: 12,
         salePrice: 123,
+        slug: "educated-una-educacion",
     },
 
     // CIENCIA
@@ -161,6 +173,7 @@ export const books = [
 
         rentalPrice: 12,
         salePrice: 123,
+        slug: "el-gen-egoista",
     },
     {
         id: 20,
@@ -173,6 +186,7 @@ export const books = [
 
         rentalPrice: 12,
         salePrice: 123,
+        slug: "cosmos",
     },
 
     // HISTORIA
@@ -187,6 +201,7 @@ export const books = [
 
         rentalPrice: 12,
         salePrice: 123,
+        slug: "guns-germs-and-steel",
     },
 
     // BIOGRAFÍAS
@@ -201,6 +216,7 @@ export const books = [
 
         rentalPrice: 12,
         salePrice: 123,
+        slug: "yo-soy-malala",
     },
 ];
 
