@@ -1,13 +1,49 @@
 -- CreateTable
-CREATE TABLE "Clients" (
+CREATE TABLE "Users" (
+    "id" SERIAL NOT NULL,
+    "fullName" TEXT NOT NULL,
+    "email" TEXT NOT NULL,
+    "password" TEXT NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "Users_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "Admins" (
     "id" SERIAL NOT NULL,
     "name" TEXT NOT NULL,
-    "lastName" TEXT NOT NULL,
     "documentType" TEXT NOT NULL,
     "codeDocument" INTEGER NOT NULL,
     "address" TEXT NOT NULL,
     "phone" TEXT NOT NULL,
-    "email" TEXT NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "Admins_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "Librarians" (
+    "id" SERIAL NOT NULL,
+    "name" TEXT NOT NULL,
+    "charge" TEXT NOT NULL,
+    "phone" TEXT NOT NULL,
+    "workingHours" TEXT NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "Librarians_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "Clients" (
+    "id" SERIAL NOT NULL,
+    "documentType" TEXT NOT NULL,
+    "codeDocument" INTEGER NOT NULL,
+    "address" TEXT NOT NULL,
+    "phone" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
@@ -54,20 +90,6 @@ CREATE TABLE "Authors" (
 );
 
 -- CreateTable
-CREATE TABLE "Librarians" (
-    "id" SERIAL NOT NULL,
-    "name" TEXT NOT NULL,
-    "charge" TEXT NOT NULL,
-    "email" TEXT NOT NULL,
-    "phone" TEXT NOT NULL,
-    "workingHours" TEXT NOT NULL,
-    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" TIMESTAMP(3) NOT NULL,
-
-    CONSTRAINT "Librarians_pkey" PRIMARY KEY ("id")
-);
-
--- CreateTable
 CREATE TABLE "Loans" (
     "id" SERIAL NOT NULL,
     "loanDate" TIMESTAMP(3) NOT NULL,
@@ -83,33 +105,11 @@ CREATE TABLE "Loans" (
     CONSTRAINT "Loans_pkey" PRIMARY KEY ("id")
 );
 
--- CreateTable
-CREATE TABLE "Admin" (
-    "id" SERIAL NOT NULL,
-    "name" TEXT NOT NULL,
-    "lastName" TEXT NOT NULL,
-    "documentType" TEXT NOT NULL,
-    "codeDocument" INTEGER NOT NULL,
-    "address" TEXT NOT NULL,
-    "phone" TEXT NOT NULL,
-    "email" TEXT NOT NULL,
-    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" TIMESTAMP(3) NOT NULL,
-
-    CONSTRAINT "Admin_pkey" PRIMARY KEY ("id")
-);
-
 -- CreateIndex
-CREATE UNIQUE INDEX "Clients_email_key" ON "Clients"("email");
+CREATE UNIQUE INDEX "Users_email_key" ON "Users"("email");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Books_ISBN_key" ON "Books"("ISBN");
-
--- CreateIndex
-CREATE UNIQUE INDEX "Librarians_email_key" ON "Librarians"("email");
-
--- CreateIndex
-CREATE UNIQUE INDEX "Admin_email_key" ON "Admin"("email");
 
 -- AddForeignKey
 ALTER TABLE "Books" ADD CONSTRAINT "Books_categoryId_fkey" FOREIGN KEY ("categoryId") REFERENCES "Categories"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

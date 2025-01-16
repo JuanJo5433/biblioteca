@@ -15,17 +15,9 @@ datasource db {
 
 model Users {
   id             Int        @id @default(autoincrement())
-  name           String
-  lastName       String
+  fullName       String
   email          String      @unique
   password       String
-  role           String
-  adminId        Int 
-  admin          Admins      @relation(fields: [adminId], references: [id])
-  clientId       Int 
-  client         Clients     @relation(fields: [clientId], references: [id])
-  librarianId    Int 
-  librarian      Librarians  @relation(fields: [librarianId], references: [id])
   createdAt      DateTime    @default(now())
   updatedAt      DateTime    @updatedAt
 }
@@ -34,12 +26,10 @@ model Users {
 model Admins {
   id             Int        @id @default(autoincrement())
   name           String
-  lastName       String
   documentType   String
   codeDocument   Int 
   address        String
   phone          String
-  Users          Users[]
   createdAt      DateTime    @default(now())
   updatedAt      DateTime    @updatedAt
 }
@@ -51,7 +41,6 @@ model Librarians {
   charge          String
   phone           String
   workingHours    String
-  Users           Users[]
   createdAt       DateTime    @default(now())
   updatedAt       DateTime    @updatedAt
 }
@@ -63,7 +52,6 @@ model Clients {
   address        String
   phone          String
   Loans          Loans[]
-  Users          Users[]
   createdAt      DateTime    @default(now())
   updatedAt      DateTime    @updatedAt
 }

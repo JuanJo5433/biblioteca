@@ -4,7 +4,10 @@ const prismaClientSingleton = () => {
   return new PrismaClient();
 };
 
-const globalForPrisma = globalThis;
+// Aquí puedes usar `globalThis` sin errores
+const globalForPrisma = globalThis as typeof globalThis & {
+  prisma?: PrismaClient;
+};
 
 const prisma = globalForPrisma.prisma ?? prismaClientSingleton();
 
