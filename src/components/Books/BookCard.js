@@ -1,4 +1,3 @@
-import React, { useState } from "react";
 import Link from "next/link";
 
 export function BookCard(props) {
@@ -20,7 +19,7 @@ export function BookCard(props) {
                 <div className="relative z-10 p-4 ml-5 text-center h-full flex flex-col">
                     <img
                         src={
-                            book.image ||
+                            book.cover ||
                             "https://images.cdn1.buscalibre.com/fit-in/360x360/07/b1/07b1ebdde976fdf929f75769f19efb42.jpg"
                         }
                         alt={book.title}
@@ -30,7 +29,7 @@ export function BookCard(props) {
                         {book.title}
                     </h3>
                     <p className="text-sm text-text-secondary mt-1">
-                        {book.author}
+                        {book.author.name}
                     </p>
                     <Link href={`/${book.slug}`}>
                         <button className="mt-4 bg-library-green text-white py-2 px-4 rounded-md hover:bg-hover-green transition-colors duration-200">

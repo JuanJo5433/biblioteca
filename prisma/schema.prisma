@@ -12,3 +12,97 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+
+model Clients {
+  id             Int       @id @default(autoincrement())
+  name           String
+  lastName       String
+  documentType   String
+  codeDocument   Int 
+  address        String
+  phone          String
+  email          String      @unique
+  Loans          Loans[]
+  createdAt      DateTime    @default(now())
+  updatedAt      DateTime    @updatedAt
+}
+
+model Books {
+  id                     Int       @id @default(autoincrement())
+  ISBN                   String    @unique
+  title                  String
+  subtitle               String?
+  description            String
+  edition                String
+  editorial              String
+  placePublication       String
+  yearPublication        Int
+  slug                   String @unique
+  status                 Boolean
+  cover                  String
+  acquisitionDate        DateTime
+  purchasePrice          Float
+  rentalPrice            Float
+  categoryId             Int 
+  category               Categories  @relation(fields: [categoryId], references: [id])
+  authorId               Int
+  author                 Authors     @relation(fields: [authorId], references: [id])
+  Loans                  Loans[]
+  createdAt              DateTime    @default(now())
+  updatedAt              DateTime    @updatedAt
+}
+
+model Categories {
+  id          Int         @id @default(autoincrement())
+  name        String        
+  Books       Books[]
+}
+
+model Authors {
+  id              Int         @id @default(autoincrement())
+  name            String
+  literaryGender  String?
+  Books       Books[]
+}
+
+
+model Librarians {
+  id              Int         @id @default(autoincrement())
+  name            String
+  charge          String
+  email           String      @unique
+  phone           String
+  workingHours    String
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+}
+
+
+model Loans {
+  id                          Int         @id @default(autoincrement())
+  loanDate                    DateTime
+  expectedReturnDate          DateTime
+  realReturnDate              DateTime?
+  status                      Boolean
+  multa                       Float
+  clientId                    Int
+  client                      Clients     @relation(fields: [clientId], references: [id])
+  bookId                      Int
+  book                        Books       @relation(fields: [bookId], references: [id])
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+}
+
+model Admin {
+  id             Int        @id @default(autoincrement())
+  name           String
+  lastName       String
+  documentType   String
+  codeDocument   Int 
+  address        String
+  phone          String
+  email          String      @unique
+  createdAt      DateTime    @default(now())
+  updatedAt      DateTime    @updatedAt
+}

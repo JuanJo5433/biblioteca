@@ -1,8 +1,16 @@
 "use client";
 
 import { Star, ShoppingCart, BookOpen } from "lucide-react";
-import { books , reviews } from "@/components/Books/Bookjson";
 
+import { books, reviews } from "@/components/Books/Bookjson";
+
+import { reviews } from "@/components/Books/Bookjson";
+import { fetchBooksBySlug } from "@/services/books/bookServices";
+import { useCart } from "@/context/cartContext";
+import { Alert } from "@heroui/react";
+import { useState } from "react";
+
+// Componente para mostrar las estrellas de calificación
 function StarRating({ rating }) {
     return (
         <div className="flex items-center">
@@ -25,14 +33,18 @@ function StarRating({ rating }) {
     );
 }
 
-export default function BookDetail({slug}) {
-   
+// Componente principal de detalle del libro
+export default function BookDetail({ book }) {
+    const { addCart } = useCart();
+    const [alertIsOpen, setAlertIsOpen] = useState(false);
 
-    const book = books.find((b) => b.slug === slug);
-    const bookReviews = reviews.filter((review) => review.bookId === book.id);
+    const addBookWrapper = (idBook) => {
+        addCart(idBook);
+        alertCart();
+    };
 
-
-    if (!book) {
+    const bookData = book[0]; // Accedemos al primer objeto del array
+    if (!bookData) {
         return (
             <div className="text-center text-gray-700">
                 Libro no encontrado.
@@ -40,25 +52,32 @@ export default function BookDetail({slug}) {
         );
     }
 
+    const bookReviews = reviews.filter(
+        (review) => review.bookId === bookData.id
+    );
+    const alertCart = () => {
+        setAlertIsOpen(true);
+        setTimeout(() => {
+            setAlertIsOpen(false);
+        }, 3000);
+    };
     return (
         <div className=" bg-[var(--background-main)] w-screen max-w-full px-52 py-14 overflow-x-hidden">
             <div className="flex flex-col md:flex-row ">
                 <div className="md:w-1/1 w-48 mr-10">
                     <img
-                        src={book.image}
-                        alt={book.title}
-                        className="w-max  rounded-lg shadow-l object-cover"
+                        src={bookData.cover}
+                        alt={bookData.title}
+                        className="w-max rounded-lg shadow-l "
                     />
                 </div>
                 <div className="md:w-1/2">
                     <h1 className="text-3xl font-bold text-espresso-brown mb-2">
-                        {book.title}
+                        {bookData.title}
                     </h1>
-                    <h2 className="text-xl text-warm-gray mb-4">
-                        {book.author}
-                    </h2>
+                    <h2 className="text-xl text-warm-gray mb-4">{}</h2>
                     <p className="mt-4 text-text-primary break-words">
-                        {book.description}
+                        {bookData.description}
                     </p>
                     <div className="mt-6 flex items-center justify-between">
                         <div>
@@ -66,7 +85,7 @@ export default function BookDetail({slug}) {
                                 Precio de alquiler
                             </p>
                             <p className="text-2xl font-bold text-library-green">
-                                ${book.rentalPrice}
+                                ${bookData.rentalPrice}
                             </p>
                         </div>
                         <div>
@@ -74,7 +93,7 @@ export default function BookDetail({slug}) {
                                 Precio de venta
                             </p>
                             <p className="text-2xl font-bold text-library-green">
-                                ${book.salePrice}
+                                ${bookData.purchasePrice}
                             </p>
                         </div>
                     </div>
@@ -82,7 +101,10 @@ export default function BookDetail({slug}) {
                         <button className="flex-1 bg-espresso-brown text-button-primary-text p-2 rounded-lg hover:bg-hover-brown flex items-center justify-center">
                             <BookOpen className="mr-2 h-4 w-4" /> Alquilar
                         </button>
-                        <button className="flex-1 bg-soft-taupe text-espresso-brown p-2 rounded-lg hover:bg-rich-tan flex items-center justify-center">
+                        <button
+                            onClick={() => addBookWrapper(bookData.id)}
+                            className="flex-1 bg-soft-taupe text-espresso-brown p-2 rounded-lg hover:bg-rich-tan flex items-center justify-center"
+                        >
                             <ShoppingCart className="mr-2 h-4 w-4" /> Comprar
                         </button>
                     </div>
@@ -98,9 +120,10 @@ export default function BookDetail({slug}) {
                                 className="p-6 border rounded-lg shadow-sm bg-white"
                             >
                                 <div className="flex items-start space-x-4">
-                                    <img src={review.image} className="flex justify-center items-center w-10 h-10 rounded-full bg-library-green text-white"/>
-                                        
-                                    
+                                    <img
+                                        src={review.image}
+                                        className="flex justify-center items-center w-10 h-10 rounded-full bg-library-green text-white"
+                                    />
                                     <div className="flex-1">
                                         <p className="font-semibold text-text-primary">
                                             {review.user}
@@ -109,7 +132,6 @@ export default function BookDetail({slug}) {
                                             {review.review}
                                         </p>
                                         <StarRating rating={review.rating} />
-
                                     </div>
                                 </div>
                             </div>
@@ -117,21 +139,47 @@ export default function BookDetail({slug}) {
                     </div>
                 </div>
             </div>
+            <div className="absolute right-4 top-20">
+                {alertIsOpen && (
+                    <Alert
+                        color={"success"}
+                        title={`El producto se agrego al carrito`}
+                    />
+                )}
+            </div>
         </div>
     );
 }
 
 export async function getServerSideProps(context) {
-
-    const {slug} = context.params;
+    const { slug } = context.params;
 
     return {
         props: {
             slug: slug,
-        }
-    }
-
-
-
+        },
+    };
 }
 
+// Obtener datos del libro en el servidor
+export async function getServerSideProps({ params }) {
+    const { slug } = params;
+
+    try {
+        const data = await fetchBooksBySlug(slug);
+        if (!data) {
+            return {
+                notFound: true,
+            };
+        }
+        return {
+            props: {
+                book: data.data || null,
+            },
+        };
+    } catch (error) {
+        return {
+            notFound: true, // En caso de error, se muestra una página de 404
+        };
+    }
+}
