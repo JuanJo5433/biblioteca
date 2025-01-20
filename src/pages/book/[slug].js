@@ -2,7 +2,7 @@
 
 import { Star, ShoppingCart, BookOpen } from "lucide-react";
 
-import { books, reviews } from "@/components/Books/Bookjson";
+
 
 import { reviews } from "@/components/Books/Bookjson";
 import { fetchBooksBySlug } from "@/services/books/bookServices";
@@ -62,7 +62,7 @@ export default function BookDetail({ book }) {
         }, 3000);
     };
     return (
-        <div className=" bg-[var(--background-main)] w-screen max-w-full px-52 py-14 overflow-x-hidden">
+        <div className="  w-screen max-w-full px-52 py-24 overflow-x-hidden">
             <div className="flex flex-col md:flex-row ">
                 <div className="md:w-1/1 w-48 mr-10">
                     <img
@@ -149,16 +149,6 @@ export default function BookDetail({ book }) {
             </div>
         </div>
     );
-}
-
-export async function getServerSideProps(context) {
-    const { slug } = context.params;
-
-    return {
-        props: {
-            slug: slug,
-        },
-    };
 }
 
 // Obtener datos del libro en el servidor

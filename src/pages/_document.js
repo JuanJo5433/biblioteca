@@ -8,7 +8,7 @@ export default function Document() {
 
       <Head />
       <Header/>
-      <body className="antialiased bg-background min-h-screen flex flex-col">
+      <body className="antialiased bg-[var(--background-main)] min-h-screen flex flex-col">
         <Main />
         <NextScript />
       </body>

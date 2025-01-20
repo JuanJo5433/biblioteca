@@ -31,7 +31,7 @@ export function BookCard(props) {
                     <p className="text-sm text-text-secondary mt-1">
                         {book.author.name}
                     </p>
-                    <Link href={`/${book.slug}`}>
+                    <Link href={`/book/${book.slug}`}>
                         <button className="mt-4 bg-library-green text-white py-2 px-4 rounded-md hover:bg-hover-green transition-colors duration-200">
                             Ver más
                         </button>

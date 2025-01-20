@@ -3,7 +3,10 @@
 @tailwind utilities;
 
 /* Paleta de colores elegante y minimalista para una biblioteca */
-
+*{
+  margin: 0;
+  padding: 0;
+}
 :root {
   /* Colores principales */
   --espresso-brown: #4E342E; /* Para encabezados, botones principales */

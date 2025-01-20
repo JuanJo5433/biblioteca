@@ -69,7 +69,7 @@ export function Resume() {
   }
 
   return (
-    <div className="bg-[var(--background-main)] p-6">
+    <div className=" p-6">
       <div className="my-20 max-w-4xl mx-auto bg-[var(--background-secondary)] rounded-lg shadow-lg">
         {/* Encabezado del carrito */}
         <header className="text-center py-4">
