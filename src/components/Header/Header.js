@@ -31,7 +31,7 @@ export default function Header() {
                                 Catálogo
                             </li>
                         </a>
-                        <a href="/cart">
+                        <a href="/cart?step=1">
                         <FaCartShopping />
 
                         </a>

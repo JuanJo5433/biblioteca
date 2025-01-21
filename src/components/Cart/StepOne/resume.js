@@ -139,9 +139,9 @@ export function Resume() {
             <a href="/catalog" className="bg-[var(--button-secondary-bg)] text-[var(--button-secondary-text)] py-2 px-4 rounded-md hover:bg-[var(--hover-gray)]">
               Seguir Explorando
             </a>
-            <button className="bg-[var(--button-primary-bg)] text-[var(--button-primary-text)] py-2 px-4 rounded-md hover:bg-[var(--hover-brown)]">
+            <a href="?step=2" className="bg-[var(--button-primary-bg)] text-[var(--button-primary-text)] py-2 px-4 rounded-md hover:bg-[var(--hover-brown)]">
               Proceder al Pago
-            </button>
+            </a>
           </div>
         </div>
       </div>
