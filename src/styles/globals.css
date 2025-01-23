@@ -1,0 +1,62 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Paleta de colores elegante y minimalista para una biblioteca */
+*{
+  margin: 0;
+  padding: 0;
+}
+:root {
+  /* Colores principales */
+  --espresso-brown: #4E342E; /* Para encabezados, botones principales */
+  --library-green: #2C6E49; /* Para elementos destacados */
+  --parchment-cream: #F5F5DC; /* Fondo principal */
+
+  /* Colores secundarios */
+  --warm-gray: #A89F91; /* Para texto secundario, bordes */
+  --soft-taupe: #D7CCC8; /* Para áreas de fondo suave */
+  --rich-tan: #8D6E63; /* Para acentos y detalles menores */
+
+  /* Colores de hover */
+  --hover-brown: #3E2723; /* Hover para botones principales */
+  --hover-green: #1E4D36; /* Hover para elementos destacados */
+  --hover-gray: #928A81; /* Hover para texto secundario */
+
+  /* Colores de texto */
+  --text-primary: #1C1C1C; /* Texto principal */
+  --text-secondary: #5D5D5D; /* Texto secundario */
+  --text-highlight: #FFB74D; /* Texto resaltado o enlaces */
+
+  /* Colores de fondo */
+  --background-main: #F5F5DC; /* Fondo principal */
+  --background-secondary: #ECE7E0; /* Fondo de secciones secundarias */
+  --background-dark: #2C2C2C; /* Fondo oscuro para contraste */
+
+  /* Colores de bordes */
+  --border-light: #E0E0E0; /* Bordes suaves */
+  --border-dark: #3C3C3C; /* Bordes oscuros */
+
+  /* Colores de estado */
+  --success-green: #4CAF50; /* Éxito */
+  --warning-amber: #FFC107; /* Advertencia */
+  --error-red: #D32F2F; /* Error */
+
+  /* Colores de botones */
+  --button-primary-bg: #4E342E; /* Fondo de botones principales */
+  --button-primary-text: #FFFFFF; /* Texto de botones principales */
+  --button-secondary-bg: #D7CCC8; /* Fondo de botones secundarios */
+  --button-secondary-text: #4E342E; /* Texto de botones secundarios */
+
+  /* Colores de sombras */
+  --shadow-light: rgba(0, 0, 0, 0.1); /* Sombra ligera */
+  --shadow-medium: rgba(0, 0, 0, 0.2); /* Sombra media */
+  --shadow-dark: rgba(0, 0, 0, 0.3); /* Sombra oscura */
+}
+.perspective {
+  perspective: 1000px;
+}
+.rotate-y-90 {
+  transform: rotateY(90deg);
+}
+
