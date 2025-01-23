@@ -1,20 +1,20 @@
 import { useFormik } from "formik";
 import { initialValues, validationSchema } from "./loginForm.form";
-import { authServices } from "@/services/auth/authServices";
-import { useAuth } from "@/context/authContext";
+import { AuthServices } from "@/services/auth/authServices";
+import { useAuth } from "@/hooks/useAuth";
 
-const authCtrl = new authServices();
+const authCtrl = new AuthServices();
 
 export function LoginForm() {
     const { login } = useAuth();
-
-
     const authLogin = async (values) => {
         const { email, password } = values;
         try {
-            const response = await authCtrl.authLogin(email, password, login);
-            console.log(response)
-            
+            const response = await authCtrl.authLogin(email, password);
+            const { jwt } = await response;
+            // Si la autenticación es exitosa, llamamos a la función login para guardar los datos
+            await login(jwt);
+            console.log(response);
         } catch (error) {
             console.error(error);
         }

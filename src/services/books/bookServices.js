@@ -11,7 +11,7 @@ export async function fetchBooks() {
         const data = await response.json();
         return data; // Retorna los datos procesados
     } catch (error) {
-        console.error(error);
+     
         throw error; // Permite manejar el error en el lugar donde se llama la función
     }
 }

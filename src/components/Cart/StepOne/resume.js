@@ -1,4 +1,4 @@
-import { useCart } from "@/context/cartContext";
+import { useCart } from "@/hooks/useCart";
 import { fetchBooksById } from "@/services/books/bookServices";
 import { useEffect, useState } from "react";
 import { FaRegTrashAlt } from "react-icons/fa";

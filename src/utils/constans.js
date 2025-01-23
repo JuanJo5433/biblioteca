@@ -1,6 +1,7 @@
 export function getConstants() {
     // Extraemos las variables de entorno individualmente
     const cart = process.env.NEXT_PUBLIC_CART;
+    const client = process.env.NEXT_PUBLIC_CLIENT;
     const apiUrl = process.env.NEXT_PUBLIC_API_URL;
     const payuApiKey = process.env.NEXT_PUBLIC_API_KEY;
     const payuApiLogin = process.env.NEXT_PUBLIC_PAYU_API_LOGIN;
@@ -13,6 +14,7 @@ export function getConstants() {
     // Retornamos las constantes en un objeto
     return {
         cart,
+        client,
         apiUrl,
         payuApiKey,
         payuApiLogin,

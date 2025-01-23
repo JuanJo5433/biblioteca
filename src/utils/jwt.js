@@ -1,23 +1,30 @@
-import jwt from "jsonwebtoken";
+import { SignJWT, jwtVerify } from "jose";
 import { getConstants } from "./constans";
 
-// Desestructuramos secretKey para acceder a ella de forma más clara
+// Desestructuramos la clave secreta desde las constantes
 const { secretKey } = getConstants();
 
+// Validación inicial para asegurarnos de que la clave secreta esté definida
 if (!secretKey) {
     throw new Error("La clave secreta no está definida en las constantes");
 }
 
-// Función para generar el token (síncrona)
-export const encrypt = (payload) => {
+/**
+ * Función para generar un token JWT
+ * @param {Object} payload - Datos a incluir en el token
+ * @returns {Promise<string>} - Token generado
+ */
+export const encrypt = async (payload) => {
     try {
         console.log("Clave secreta utilizada para generar el token:", secretKey);
 
-        // jwt.sign es síncrono, no necesitamos async/await
-        const token = jwt.sign(payload, secretKey, {
-            expiresIn: "1h", // El token expira en 1 hora
-            algorithm: "HS256", // Algoritmo utilizado
-        });
+        // Convertimos la clave secreta en un formato adecuado usando TextEncoder
+        const encoder = new TextEncoder();
+
+        // Creamos y firmamos el token usando la librería jose
+        const token = await new SignJWT(payload)
+            .setProtectedHeader({ alg: "HS256" }) // Usamos HS256 como algoritmo de firma
+            .sign(encoder.encode(secretKey)); // Firmamos el token con la clave secreta
 
         console.log("Token generado correctamente:", token);
         return token;
@@ -27,41 +34,32 @@ export const encrypt = (payload) => {
     }
 };
 
-// Función para validar y decodificar el token
-export const decrypt = (token) => {
-    console.log("Token recibido para decodificar:", token);
-    console.log("Clave secreta utilizada para verificar:", secretKey);
-
+/**
+ * Función para decodificar y verificar un token JWT
+ * @param {string} token - Token a decodificar
+ * @returns {Promise<Object|null>} - Payload decodificado o `null` si no hay token
+ */
+export const decrypt = async (token) => {
     try {
+        // Validamos si el token fue proporcionado
         if (!token) {
-            throw new Error("No se proporcionó un token");
+            console.warn("No se proporcionó un token para decodificar");
+            return null;
         }
 
-        // Limpiar el token de posibles espacios
-        token = token.trim();
+        console.log("Token a decodificar:", token);
 
-        // Verificar y decodificar el token
-        const decoded = jwt.verify(token, secretKey, { algorithms: ["HS256"] });
-        console.log("Token decodificado correctamente:", decoded);
+        // Convertimos la clave secreta en un formato adecuado usando TextEncoder
+        const encoder = new TextEncoder();
 
-        return decoded;
+        // Verificamos y decodificamos el token
+        const decoded = await jwtVerify(token, encoder.encode(secretKey));
+
+        console.log("Token decodificado correctamente:", decoded.payload);
+        return decoded.payload; // Retornamos solo el payload del token
     } catch (error) {
-        // Manejo específico de errores
-        if (error.name === "TokenExpiredError") {
-            console.error("El token ha expirado");
-            throw new Error("El token ha expirado");
-        } else if (error.name === "JsonWebTokenError") {
-            console.error("El token es inválido");
-            throw new Error("El token es inválido");
-        } else {
-            console.error("Error al verificar el token:", error.message);
-            throw new Error("Error desconocido al verificar el token");
-        }
+        console.error("Error al verificar el token:", error.message);
+        throw new Error("Token inválido o expirado");
     }
 };
 
-// const testToken = encrypt({ test: "data" });
-// console.log("Token de prueba:", testToken);
-
-// const verifiedToken = decrypt(testToken);
-// console.log("Token de prueba decodificado:", verifiedToken);

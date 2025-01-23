@@ -1,14 +1,11 @@
 "use client";
 
 import { Star, ShoppingCart, BookOpen } from "lucide-react";
-
-
-
 import { reviews } from "@/components/Books/Bookjson";
 import { fetchBooksBySlug } from "@/services/books/bookServices";
-import { useCart } from "@/context/cartContext";
 import { Alert } from "@heroui/react";
 import { useState } from "react";
+import { useCart } from "@/hooks/useCart";
 
 // Componente para mostrar las estrellas de calificación
 function StarRating({ rating }) {

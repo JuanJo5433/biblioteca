@@ -4,7 +4,7 @@ import { SiMastercard } from "react-icons/si";
 import { RiVisaLine } from "react-icons/ri";
 import { SiAmericanexpress } from "react-icons/si";
 import { MdCancel } from "react-icons/md";
-import { useCart } from "@/context/cartContext";
+import { useCart } from "@/hooks/useCart";
 
 const PaymentForm = () => {
     // Estados para manejar los datos del formulario

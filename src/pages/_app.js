@@ -1,5 +1,7 @@
-import { AuthProvider } from "@/hooks/useAuth";
-import { CartProvider } from "@/hooks/useCart";
+
+
+import { AuthProvider } from "@/context/authContext";
+import { CartProvider } from "@/context/cartContext";
 import "@/styles/globals.css";
 import { HeroUIProvider } from "@heroui/react";
 
