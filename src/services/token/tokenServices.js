@@ -1,4 +1,4 @@
-import { decrypt, encrypt } from "@/utils/jwt";
+import { decrypt } from "@/utils/jwt";
 
 export class Token {
     // Función para establecer una cookie

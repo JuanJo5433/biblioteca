@@ -30,7 +30,6 @@ export const encrypt = async (payload) => {
         return token;
     } catch (error) {
         console.error("Error al generar el token:", error.message);
-        throw new Error("Error al generar el token");
     }
 };
 
@@ -47,19 +46,15 @@ export const decrypt = async (token) => {
             return null;
         }
 
-        console.log("Token a decodificar:", token);
-
         // Convertimos la clave secreta en un formato adecuado usando TextEncoder
         const encoder = new TextEncoder();
 
         // Verificamos y decodificamos el token
         const decoded = await jwtVerify(token, encoder.encode(secretKey));
 
-        console.log("Token decodificado correctamente:", decoded.payload);
         return decoded.payload; // Retornamos solo el payload del token
     } catch (error) {
         console.error("Error al verificar el token:", error.message);
-        throw new Error("Token inválido o expirado");
+       
     }
 };
-

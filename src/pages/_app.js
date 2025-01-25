@@ -1,5 +1,6 @@
 
 
+import Header from "@/components/Header/Header";
 import { AuthProvider } from "@/context/authContext";
 import { CartProvider } from "@/context/cartContext";
 import "@/styles/globals.css";
@@ -10,6 +11,7 @@ export default function App({ Component, pageProps }) {
         <AuthProvider>
             <HeroUIProvider>
                 <CartProvider>
+                    <Header/>
                     <Component {...pageProps} />{" "}
                 </CartProvider>
             </HeroUIProvider>

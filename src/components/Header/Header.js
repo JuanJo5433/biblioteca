@@ -1,6 +1,11 @@
+import { useAuth } from "@/hooks/useAuth";
+import { Button } from "@heroui/react";
 import { FaCartShopping } from "react-icons/fa6";
+import { MdAccountCircle } from "react-icons/md";
 
 export default function Header() {
+    const { user } = useAuth();
+
     return (
         <header
             className="relative w-full h-80 bg-cover bg-center flex flex-col justify-between"
@@ -12,7 +17,7 @@ export default function Header() {
             <div className="absolute inset-0 bg-gray-900 bg-opacity-50"></div>
 
             {/* Contenido del header */}
-            <section className="relative z-10 flex justify-between items-center p-6">
+            <section className="relative z-10 flex justify-between items-center p-7">
                 <div className="flex items-center">
                     <h1 className="ml-3 font-bold text-4xl text-parchment-cream ">
                         Biblioteca Elegante
@@ -32,9 +37,28 @@ export default function Header() {
                             </li>
                         </a>
                         <a href="/cart?step=1">
-                        <FaCartShopping />
-
+                            <FaCartShopping />
                         </a>
+
+                        {user ? (
+                            <a href="/account">
+                                <Button
+                                    className="-mt-5"
+                                    isIconOnly
+                                    aria-label="Take a photo"
+                                    color="warning"
+                                    variant="faded"
+                                >
+                                    <MdAccountCircle className="text-black text-xl" />
+                                </Button>
+                            </a>
+                        ) : (
+                            <a href="/login">
+                                <Button className="-mt-5 bg-white border-small border-warm-gray text-slate-700">
+                                    Login
+                                </Button>
+                            </a>
+                        )}
                     </ul>
                 </nav>
             </section>

@@ -14,8 +14,6 @@ export async function getClient(token) {
     try {
         // Desciframos el token para obtener los datos del cliente
         const data = await decrypt(token);
-        console.log("🚀 ~ getClient ~ datos decifrados:", data);
-
         const { id } = data; // Extraemos el ID del cliente
 
         // Realizamos la solicitud GET al endpoint correspondiente
@@ -30,8 +28,7 @@ export async function getClient(token) {
 
         // Parseamos y retornamos los datos procesados
         const result = await response.json();
-        console.log("🚀 ~ getClient ~ result:", result)
-        
+
         return result;
     } catch (error) {
         // Manejo de errores con logging para depuración
