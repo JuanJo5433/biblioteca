@@ -98,7 +98,7 @@ export function LoginForm() {
                                     {error}
                                 </h2>
                             </div>
-                        )}
+                        )} 
                     </div>
 
                     {/* Botón de inicio de sesión con estado de carga */}
