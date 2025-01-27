@@ -1,14 +1,14 @@
 import prisma from "@/libs/prisma";
 import { Token } from "@/services/token/tokenServices";
-import { getConstants } from "@/utils/constans";
 import { encrypt } from "@/utils/jwt";
+import  argon2 from "argon2";
 
 const tokenCtrl = new Token();
 
 // Manejador de solicitudes para la autenticación de usuarios
 export default async function handler(req, res) {
     try {
-        if (req.method !== "POST") {
+        if (req.method === "GET") {
             return res.status(405).json({ message: "Método no permitido" });
         }
 
@@ -30,9 +30,10 @@ export default async function handler(req, res) {
         if (!client) {
             return res.status(400).json({ message: "El correo no existe" });
         }
+        const isMatch = await argon2.verify(client.password, password);
 
         // Verificación de la contraseña
-        if (client.password !== password) {
+        if (!isMatch) {
             return res
                 .status(400)
                 .json({ message: "La contraseña es incorrecta" });
