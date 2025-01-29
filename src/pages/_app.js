@@ -1,5 +1,3 @@
-
-
 import Header from "@/components/Header/Header";
 import { AuthProvider } from "@/context/authContext";
 import { CartProvider } from "@/context/cartContext";
@@ -8,13 +6,13 @@ import { HeroUIProvider } from "@heroui/react";
 
 export default function App({ Component, pageProps }) {
     return (
-        <AuthProvider>
-            <HeroUIProvider>
+        <HeroUIProvider>
+            <AuthProvider>
                 <CartProvider>
-                    <Header/>
+                    <Header />
                     <Component {...pageProps} />{" "}
                 </CartProvider>
-            </HeroUIProvider>
-        </AuthProvider>
+            </AuthProvider>
+        </HeroUIProvider>
     );
 }

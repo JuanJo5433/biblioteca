@@ -8,9 +8,7 @@ import { IoMdExit } from "react-icons/io";
 import { useAuth } from "@/hooks/useAuth";
 
 export default function Account() {
-
-    const {  logout } = useAuth();
-    
+    const { logout } = useAuth();
 
     return (
         <div className=" my-5 flex justify-center items-center">
@@ -59,6 +57,7 @@ export default function Account() {
                             key="salir"
                             title={
                                 <button
+                                    type="button"
                                     onClick={() => logout()}
                                     className="flex items-center space-x-2"
                                 >

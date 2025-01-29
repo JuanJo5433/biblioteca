@@ -1,3 +1,4 @@
+import { authFetch } from "@/utils/authFetch";
 import { getConstants } from "@/utils/constans";
 import { decrypt } from "@/utils/jwt";
 
@@ -34,5 +35,33 @@ export async function getClient(token) {
         // Manejo de errores con logging para depuración
         console.error("Error al obtener el cliente:", error.message);
         throw error; // Relanzamos el error para ser manejado por el consumidor
+    }
+}
+
+// Función para actualizar la información de un cliente
+export async function updateClient(updateData) {
+    
+
+    try {
+        const response = await authFetch(`${apiUrl}/${client}`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(updateData),
+        });
+
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(
+                errorData.message || "Error al actualizar el cliente"
+            );
+        }
+
+        const result = await response.json();
+        return result;
+    } catch (error) {
+        console.error("Error en actualización del cliente:", error.message);
+        throw error;
     }
 }

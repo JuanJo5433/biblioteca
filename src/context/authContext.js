@@ -19,7 +19,7 @@ export function AuthProvider(props) {
     // Obtener el token del localStorage o cookie y verificar su validez
     useEffect(() => {
         (async () => {
-            const storedToken = tokenCtrl.getToken("token");
+            const storedToken = tokenCtrl.getTokenClient("token");
 
             if (!storedToken) {
                 setLoading(false);

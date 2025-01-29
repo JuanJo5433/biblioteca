@@ -95,10 +95,14 @@ export default function BookDetail({ book }) {
                         </div>
                     </div>
                     <div className="mt-6 flex gap-4">
-                        <button className="flex-1 bg-espresso-brown text-button-primary-text p-2 rounded-lg hover:bg-hover-brown flex items-center justify-center">
+                        <button
+                            type="button"
+                            className="flex-1 bg-espresso-brown text-button-primary-text p-2 rounded-lg hover:bg-hover-brown flex items-center justify-center"
+                        >
                             <BookOpen className="mr-2 h-4 w-4" /> Alquilar
                         </button>
                         <button
+                            type="button"
                             onClick={() => addBookWrapper(bookData.id)}
                             className="flex-1 bg-soft-taupe text-espresso-brown p-2 rounded-lg hover:bg-rich-tan flex items-center justify-center"
                         >

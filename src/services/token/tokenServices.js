@@ -10,16 +10,20 @@ export class Token {
     };
     
     // Función para obtener una cookie (corregida)
-    getToken(name) {
-        const value = document.cookie; // Access cookie directly (assuming server-side rendering)
-        const parts = value.split(`${name}=`); // Split without extra space
+     // Obtener token del lado servidor
+     getTokenServer(req) {
+        return req.cookies.token || null;
+    }
 
-        if (parts.length === 2) {
-            const token = parts.pop().split(";").shift().trim(); // Remove leading/trailing spaces
-            return token;
-        }
-
-        return null;
+    // Obtener token del lado cliente
+    getTokenClient(name) {
+        if (typeof window === 'undefined') return null;
+        const value = document.cookie;
+        const parts = value.split(`${name}=`);
+        
+        return parts.length === 2 
+            ? parts.pop().split(";").shift().trim()
+            : null;
     }
 
     async isTokenExpired(token) {

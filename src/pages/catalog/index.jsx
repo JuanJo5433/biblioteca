@@ -28,7 +28,10 @@ const CatalogPage = () => {
                         type="text"
                         placeholder="Buscar libro"
                     />
-                    <button className="absolute top-px right-0 px-4 py-3 bg-button-primary-bg text-button-primary-text rounded-l-sm rounded-md hover:bg-hover-brown">
+                    <button
+                        type="button"
+                        className="absolute top-px right-0 px-4 py-3 bg-button-primary-bg text-button-primary-text rounded-l-sm rounded-md hover:bg-hover-brown"
+                    >
                         Buscar
                     </button>
                 </div>

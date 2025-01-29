@@ -10,8 +10,7 @@ import { Token } from "@/services/token/tokenServices";
  */
 export async function authFetch(url, params) {
     const tokenCtrl = new Token();
-    const token = tokenCtrl.getToken("token");
-
+    const token = tokenCtrl.getTokenClient("token");
     // Función para hacer logout y redirigir al login
     const logout = () => {
         document.cookie = "token=; Max-Age=0; path=/;";
@@ -19,7 +18,7 @@ export async function authFetch(url, params) {
     };
 
     // Verificamos si no hay token o si el token ha expirado
-    if (!token || tokenCtrl.isTokenExpired(token)) {
+    if (!token) {
         logout();
         return; // Si no hay token o ha expirado, no hacemos la solicitud
     }
@@ -35,12 +34,11 @@ export async function authFetch(url, params) {
 
     try {
         const response = await fetch(url, paramsTemp);
-
         // Verificamos si la respuesta no es OK 
-        if (!response.ok) {
-            logout(); // Si la respuesta no es válida, logout
-            return;
-        }
+         if (!response.ok) {
+             logout(); // Si la respuesta no es válida, logout
+             return;
+         }
 
         return response; // Retornamos la respuesta si todo fue exitoso
     } catch (error) {
