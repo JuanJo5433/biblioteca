@@ -3,7 +3,8 @@ import { useFormik } from "formik";
 import { useAuth } from "@/hooks/useAuth";
 import { getInitialValues, validationSchema } from "./profile.form";
 import { updateClient } from "@/services/client/clientService";
-import { Alert } from "@heroui/react";
+import { Alert, Button } from "@heroui/react";
+import { FiEdit, FiXCircle, FiSave } from "react-icons/fi";
 
 export function Profile() {
     const { user } = useAuth();
@@ -13,7 +14,7 @@ export function Profile() {
 
     const formik = useFormik({
         initialValues: getInitialValues(user),
-        enableReinitialize: true, // Permite actualizar los valores iniciales si `user` cambia
+        enableReinitialize: true,
         validationSchema: validationSchema(),
         onSubmit: async (values) => {
             try {
@@ -22,143 +23,162 @@ export function Profile() {
                 setTimeout(() => setIsUpdate(false), 3000);
                 setFormDisabled(true);
             } catch (error) {
-                setErrorMessage("Error al actualizar la información.");
+                setErrorMessage("Error al actualizar la información");
                 console.error(error);
             }
         },
     });
 
     return (
-        <div className="max-w-lg mx-auto">
-            <form onSubmit={formik.handleSubmit} className="space-y-4 my-5">
-                {/* Nombre y Apellidos */}
-                <div className="flex gap-4">
-                    <div className="w-1/2">
-                        <label
-                            htmlFor="name"
-                            className="block text-text-secondary font-medium mb-1"
-                        >
+        <div className="max-w-2xl mx-auto">
+            <form onSubmit={formik.handleSubmit} className="space-y-6">
+                {/* Encabezado */}
+                <div className="flex items-center justify-between border-b border-border-light pb-4">
+                    <h2 className="text-2xl font-bold text-text-primary">
+                        Información Personal
+                    </h2>
+                    <Button
+                        type="button"
+                        variant="light"
+                        className="text-primary hover:bg-primary/10"
+                        onClick={() => setFormDisabled(!formDisabled)}
+                        startContent={formDisabled ? <FiEdit /> : <FiXCircle />}
+                    >
+                        {formDisabled ? "Editar" : "Cancelar"}
+                    </Button>
+                </div>
+
+                {/* Campos del formulario */}
+                <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+                    {/* Nombre */}
+                    <div className="space-y-2">
+                        <label className="block text-sm font-medium text-text-primary">
                             Nombre
                         </label>
                         <input
-                            id="name"
-                            type="text"
-                            aria-label="Nombre"
-                            disabled={formDisabled}
                             {...formik.getFieldProps("name")}
-                            className="w-full py-2 px-4 border rounded-md text-text-primary"
+                            disabled={formDisabled}
+                            className={`w-full rounded-lg border bg-background-main p-3 ${
+                                formik.errors.name && formik.touched.name
+                                    ? "border-error"
+                                    : "border-border-light"
+                            } ${formDisabled ? "bg-background-secondary" : ""}`}
                         />
+                        {formik.errors.name && formik.touched.name && (
+                            <p className="text-sm text-error">
+                                {formik.errors.name}
+                            </p>
+                        )}
                     </div>
-                    <div className="w-1/2">
-                        <label
-                            htmlFor="lastName"
-                            className="block text-text-secondary font-medium mb-1"
-                        >
-                            Apellidos
+
+                    {/* Apellido */}
+                    <div className="space-y-2">
+                        <label className="block text-sm font-medium text-text-primary">
+                            Apellido
                         </label>
                         <input
-                            id="lastName"
-                            type="text"
-                            aria-label="Apellidos"
-                            disabled={formDisabled}
                             {...formik.getFieldProps("lastName")}
-                            className="w-full py-2 px-4 border rounded-md text-text-primary"
+                            disabled={formDisabled}
+                            className={`w-full rounded-lg border bg-background-main p-3 ${
+                                formik.errors.lastName && formik.touched.lastName
+                                    ? "border-error"
+                                    : "border-border-light"
+                            } ${formDisabled ? "bg-background-secondary" : ""}`}
                         />
+                        {formik.errors.lastName && formik.touched.lastName && (
+                            <p className="text-sm text-error">
+                                {formik.errors.lastName}
+                            </p>
+                        )}
                     </div>
-                </div>
 
-                {/* Tipo y Número de Documento */}
-                <div className="flex gap-4">
-                    <div className="w-1/2">
-                        <label
-                            htmlFor="documentType"
-                            className="block text-text-secondary font-medium mb-1"
-                        >
+                    {/* Tipo Documento */}
+                    <div className="space-y-2">
+                        <label className="block text-sm font-medium text-text-primary">
                             Tipo de Documento
                         </label>
                         <select
-                            id="documentType"
-                            aria-label="Tipo de documento"
-                            disabled={formDisabled}
                             {...formik.getFieldProps("documentType")}
-                            className="w-full py-2 px-4 border rounded-md text-text-primary"
+                            disabled={formDisabled}
+                            className={`w-full rounded-lg border bg-background-main p-3 ${
+                                formik.errors.documentType && formik.touched.documentType
+                                    ? "border-error"
+                                    : "border-border-light"
+                            } ${formDisabled ? "bg-background-secondary" : ""}`}
                         >
-                            <option value="" disabled defaultValue>
-                                Selecciona...
-                            </option>
-                            <option value="CC">CC</option>
-                            <option value="TI">TI</option>
-                            <option value="CE">CE</option>
-                            <option value="PA">PA</option>
-                            <option value="DNI">DNI</option>
+                            <option value="">Seleccionar...</option>
+                            <option value="CC">Cédula de Ciudadanía</option>
+                            <option value="TI">Tarjeta de Identidad</option>
+                            <option value="CE">Cédula Extranjera</option>
+                            <option value="PA">Pasaporte</option>
                         </select>
                     </div>
-                    <div className="w-1/2">
-                        <label
-                            htmlFor="codeDocument"
-                            className="block text-text-secondary font-medium mb-1"
-                        >
+
+                    {/* Número Documento */}
+                    <div className="space-y-2">
+                        <label className="block text-sm font-medium text-text-primary">
                             Número de Documento
                         </label>
                         <input
-                            id="codeDocument"
                             type="number"
-                            aria-label="Número de documento"
-                            disabled={formDisabled}
                             {...formik.getFieldProps("codeDocument")}
-                            className="w-full py-2 px-4 border rounded-md text-text-primary"
+                            disabled={formDisabled}
+                            className={`w-full rounded-lg border bg-background-main p-3 ${
+                                formik.errors.codeDocument && formik.touched.codeDocument
+                                    ? "border-error"
+                                    : "border-border-light"
+                            } ${formDisabled ? "bg-background-secondary" : ""}`}
                         />
+                        {formik.errors.codeDocument && formik.touched.codeDocument && (
+                            <p className="text-sm text-error">
+                                {formik.errors.codeDocument}
+                            </p>
+                        )}
+                    </div>
+
+                    {/* Teléfono */}
+                    <div className="space-y-2 md:col-span-2">
+                        <label className="block text-sm font-medium text-text-primary">
+                            Teléfono
+                        </label>
+                        <input
+                            {...formik.getFieldProps("phone")}
+                            disabled={formDisabled}
+                            className={`w-full rounded-lg border bg-background-main p-3 ${
+                                formik.errors.phone && formik.touched.phone
+                                    ? "border-error"
+                                    : "border-border-light"
+                            } ${formDisabled ? "bg-background-secondary" : ""}`}
+                        />
+                        {formik.errors.phone && formik.touched.phone && (
+                            <p className="text-sm text-error">
+                                {formik.errors.phone}
+                            </p>
+                        )}
                     </div>
                 </div>
 
-                {/* Teléfono */}
-                <div>
-                    <label
-                        htmlFor="phone"
-                        className="block text-text-secondary font-medium mb-1"
-                    >
-                        Teléfono
-                    </label>
-                    <input
-                        id="phone"
-                        type="text"
-                        aria-label="Teléfono"
-                        disabled={formDisabled}
-                        {...formik.getFieldProps("phone")}
-                        className="w-full py-2 px-4 border rounded-md text-text-primary"
-                    />
-                </div>
-
-                {/* Botones */}
-                <div className="flex gap-4 pt-5">
-                    <button
-                        type="button"
-                        onClick={() => setFormDisabled(!formDisabled)}
-                        className="flex-1  py-2 bg-button-primary-bg text-button-primary-text font-medium rounded-md hover:bg-hover-brown"
-                    >
-                        {formDisabled ? "Editar Información" : "Cancelar"}
-                    </button>
-                    {!formDisabled && (
-                        <button
+                {/* Botón de guardado */}
+                {!formDisabled && (
+                    <div className="border-t border-border-light pt-6">
+                        <Button
                             type="submit"
-                            disabled={formik.isSubmitting}
-                            className="flex-1 py-2 bg-green-600 text-white font-medium rounded-md hover:bg-green-700"
+                            className="w-full bg-primary text-white hover:bg-primary-hover"
+                            startContent={<FiSave />}
+                            isLoading={formik.isSubmitting}
                         >
-                            {formik.isSubmitting
-                                ? "Guardando..."
-                                : "Actualizar Perfil"}
-                        </button>
-                    )}
-                </div>
+                            Guardar Cambios
+                        </Button>
+                    </div>
+                )}
 
                 {/* Alertas */}
-                {isUpdate && (
-                    <Alert
-                        color="success"
-                        title="¡Información actualizada con éxito!"
-                    />
-                )}
-                {errorMessage && <Alert color="error" title={errorMessage} />}
+                <div className="space-y-2">
+                    {isUpdate && (
+                        <Alert color="success" title="¡Información actualizada con éxito!" />
+                    )}
+                    {errorMessage && <Alert color="error" title={errorMessage} />}
+                </div>
             </form>
         </div>
     );

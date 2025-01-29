@@ -1,73 +1,111 @@
 import React from "react";
-import { Tabs, Tab, Card, CardBody, Alert } from "@heroui/react";
+import { Tabs, Tab, Card, CardBody } from "@heroui/react";
 import { Profile } from "@/components/Account/Profile/profile";
 import { Address } from "@/components/Account/Address/address";
 import { Shopping } from "@/components/Account/Shopping/shopping";
 import { Settings } from "@/components/Account/Settings/settings";
-import { IoMdExit } from "react-icons/io";
+import { FiUser, FiMapPin, FiShoppingBag, FiSettings, FiLogOut } from "react-icons/fi";
 import { useAuth } from "@/hooks/useAuth";
+import { Button } from "@heroui/react";
 
 export default function Account() {
     const { logout } = useAuth();
 
     return (
-        <div className=" my-5 flex justify-center items-center">
-            <div className=" shadow-medium rounded-lg p-8 w-full max-w-2xl">
-                <h1 className="text-3xl font-semibold text-text-primary mb-4 text-center">
-                    Mi Cuenta
-                </h1>
-                <h2 className="text-xl font-medium text-text-secondary mb-6">
-                    Perfil de Usuario
-                </h2>
-                <p className="text-text-secondary mb-6">
-                    Gestiona tu información personal y preferencias.
-                </p>
+        <div className="min-h-screen bg-background-main py-8">
+            <div className="container max-w-4xl">
+                <Card className="shadow-elevation-2">
+                    <CardBody className="p-6">
+                        {/* Encabezado */}
+                        <div className="mb-8 text-center">
+                            <h1 className="text-3xl font-bold text-text-primary mb-2">
+                                Mi Cuenta
+                            </h1>
+                            <p className="text-text-secondary">
+                                Gestiona tu información personal y preferencias
+                            </p>
+                        </div>
 
-                <div className="flex w-full flex-col mb-6">
-                    <Tabs aria-label="Options">
-                        <Tab key="perfil" title="Perfil">
-                            <Card>
-                                <CardBody className="bg-[#ffffff]">
+                        {/* Tabs */}
+                        <Tabs 
+                            aria-label="Opciones de cuenta"
+                            variant="bordered"
+                            classNames={{
+                                tabList: "w-full",
+                                tab: "py-4",
+                                cursor: "bg-background-secondary"
+                            }}
+                        >
+                            <Tab
+                                key="perfil"
+                                title={
+                                    <div className="flex items-center gap-2">
+                                        <FiUser />
+                                        Perfil
+                                    </div>
+                                }
+                            >
+                                <div className="p-4">
                                     <Profile />
-                                </CardBody>
-                            </Card>
-                        </Tab>
-                        <Tab key="direcciones" title="Direcciones">
-                            <Card>
-                                <CardBody className="bg-[#ffffff]">
+                                </div>
+                            </Tab>
+                            
+                            <Tab
+                                key="direcciones"
+                                title={
+                                    <div className="flex items-center gap-2">
+                                        <FiMapPin />
+                                        Direcciones
+                                    </div>
+                                }
+                            >
+                                <div className="p-4">
                                     <Address />
-                                </CardBody>
-                            </Card>
-                        </Tab>
-                        <Tab key="compras" title="Compras">
-                            <Card>
-                                <CardBody className="bg-[#ffffff]">
+                                </div>
+                            </Tab>
+                            
+                            <Tab
+                                key="compras"
+                                title={
+                                    <div className="flex items-center gap-2">
+                                        <FiShoppingBag />
+                                        Compras
+                                    </div>
+                                }
+                            >
+                                <div className="p-4">
                                     <Shopping />
-                                </CardBody>
-                            </Card>
-                        </Tab>
-                        <Tab key="ajustes" title="Ajustes">
-                            <Card>
-                                <CardBody className="bg-[#ffffff]">
+                                </div>
+                            </Tab>
+                            
+                            <Tab
+                                key="ajustes"
+                                title={
+                                    <div className="flex items-center gap-2">
+                                        <FiSettings />
+                                        Ajustes
+                                    </div>
+                                }
+                            >
+                                <div className="p-4">
                                     <Settings />
-                                </CardBody>
-                            </Card>
-                        </Tab>
-                        <Tab
-                            key="salir"
-                            title={
-                                <button
-                                    type="button"
-                                    onClick={() => logout()}
-                                    className="flex items-center space-x-2"
-                                >
-                                    <IoMdExit />
-                                    <span>Salir</span>
-                                </button>
-                            }
-                        ></Tab>
-                    </Tabs>
-                </div>
+                                </div>
+                            </Tab>
+                        </Tabs>
+
+                        {/* Botón de salida */}
+                        <div className="mt-8 border-t border-border-light pt-6 text-center">
+                            <Button
+                                variant="light"
+                                className="text-error hover:bg-error/10"
+                                onClick={logout}
+                                startContent={<FiLogOut />}
+                            >
+                                Cerrar Sesión
+                            </Button>
+                        </div>
+                    </CardBody>
+                </Card>
             </div>
         </div>
     );

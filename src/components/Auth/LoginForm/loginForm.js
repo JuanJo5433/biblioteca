@@ -2,9 +2,11 @@ import { useFormik } from "formik";
 import { initialValues, validationSchema } from "./loginForm.form";
 import { AuthServices } from "@/services/auth/authServices";
 import { useAuth } from "@/hooks/useAuth";
-import { Button } from "@heroui/react";
+import { Button, Card, CardBody } from "@heroui/react";
 import { useState } from "react";
 import { useRouter } from "next/router";
+import Link from "next/link";
+import { Input } from "@/components/Common/Input";
 
 // Instanciamos el controlador de autenticación para usar sus métodos
 const authCtrl = new AuthServices();
@@ -41,97 +43,69 @@ export function LoginForm() {
     });
 
     return (
-        <div className="flex items-center justify-center bg-[var(--background-main)]">
-            <div className="my-12 w-full max-w-md bg-[var(--background-secondary)] rounded-lg shadow-lg p-8">
-                {/* Título del formulario */}
-                <h1 className="text-2xl font-bold text-center text-[var(--espresso-brown)] mb-6">
+        <div className=" bg-background-main py-20">
+          <div className="container max-w-md">
+            <Card className="bg-background-secondary shadow-elevation-2">
+              <CardBody className="p-8">
+                <div className="space-y-1 text-center">
+                  <h1 className="text-2xl font-bold text-text-primary">
                     Bienvenido de Nuevo
-                </h1>
-                <form onSubmit={formik.handleSubmit}>
-                    {/* Campo de correo electrónico */}
-                    <div className="mb-4">
-                        <label
-                            htmlFor="email"
-                            className="block text-[var(--text-primary)] font-medium mb-2"
-                        >
-                            Correo Electrónico
-                        </label>
-                        <input
-                            type="email"
-                            id="email"
-                            name="email"
-                            autoComplete="email"
-                            placeholder="tucorreo@ejemplo.com"
-                            className="w-full p-3 border border-[var(--border-light)] rounded-md bg-[var(--soft-taupe)] text-[var(--text-primary)] focus:ring-2 focus:ring-[var(--library-green)] focus:outline-none"
-                            onChange={formik.handleChange}
-                            value={formik.values.email}
-                            required
-                        />
-                    </div>
-
-                    {/* Campo de contraseña */}
-                    <div className="mb-1">
-                        <label
-                            htmlFor="password"
-                            className="block text-[var(--text-primary)] font-medium mb-2"
-                        >
-                            Contraseña
-                        </label>
-                        <input
-                            type="password"
-                            id="password"
-                            name="password"
-                            autoComplete="current-password"
-                            placeholder="Ingresa tu contraseña"
-                            className="w-full p-3 border border-[var(--border-light)] rounded-md bg-[var(--soft-taupe)] text-[var(--text-primary)] focus:ring-2 focus:ring-[var(--library-green)] focus:outline-none"
-                            onChange={formik.handleChange}
-                            value={formik.values.password}
-                            required
-                        />
-                    </div>
-
-                    {/* Mostrar mensaje de error si existe */}
-                    <div className="mb-4">
-                        {error && (
-                            <div className="text-red-700 mb-4 rounded-md">
-                                <h2 className="text-lg font-semibold">
-                                    {error}
-                                </h2>
-                            </div>
-                        )} 
-                    </div>
-
-                    {/* Botón de inicio de sesión con estado de carga */}
-                    <Button
-                        isLoading={loading} // Muestra un indicador de carga en el botón
-                        type="submit"
-                        className="w-full py-3 bg-[var(--button-primary-bg)] text-[var(--button-primary-text)] rounded-md font-semibold hover:bg-[var(--hover-brown)] transition-colors"
-                    >
-                        Iniciar Sesión
-                    </Button>
-                </form>
-
-                {/* Enlace para recuperación de contraseña */}
-                <div className="text-center mt-4">
-                    <a
-                        href="#"
-                        className="text-sm text-[var(--text-highlight)] hover:text-[var(--hover-gray)]"
-                    >
-                        ¿Olvidaste tu contraseña?
-                    </a>
+                  </h1>
+                  <p className="text-text-secondary">
+                    Inicia sesión para continuar
+                  </p>
                 </div>
-
-                {/* Enlace para registrarse */}
-                <p className="text-center mt-6 text-sm text-[var(--text-secondary)]">
-                    ¿No tienes una cuenta?
-                    <a
-                        href="/register"
-                        className="ml-1 text-[var(--text-highlight)] hover:text-[var(--hover-gray)]"
-                    >
-                        Regístrate
-                    </a>
-                </p>
-            </div>
+    
+                <form onSubmit={formik.handleSubmit} className="mt-6 space-y-6">
+                  <Input
+                    label="Correo Electrónico"
+                    id="email"
+                    name="email"
+                    type="email"
+                    placeholder="tucorreo@ejemplo.com"
+                    value={formik.values.email}
+                    onChange={formik.handleChange}
+                    errorMessage={formik.touched.email && formik.errors.email}
+                  />
+    
+                  <Input
+                    label="Contraseña"
+                    id="password"
+                    name="password"
+                    type="password"
+                    placeholder="••••••••"
+                    value={formik.values.password}
+                    onChange={formik.handleChange}
+                    errorMessage={formik.touched.password && formik.errors.password}
+                  />
+    
+                  {error && (
+                    <Alert color="error" className="mt-4">
+                      {error}
+                    </Alert>
+                  )}
+    
+                  <Button
+                    type="submit"
+                    isLoading={loading}
+                    className="w-full bg-primary text-white hover:bg-primary-hover"
+                  >
+                    Iniciar Sesión
+                  </Button>
+                </form>
+    
+                <div className="mt-6 text-center text-sm text-text-secondary">
+                  ¿No tienes cuenta?{" "}
+                  <Link
+                    href="/register"
+                    className="font-medium text-primary hover:text-primary-hover"
+                  >
+                    Regístrate
+                  </Link>
+                </div>
+              </CardBody>
+            </Card>
+          </div>
         </div>
-    );
-}
+      );
+    }

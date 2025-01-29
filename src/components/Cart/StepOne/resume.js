@@ -1,201 +1,160 @@
 import { useCart } from "@/hooks/useCart";
 import { fetchBooksById } from "@/services/books/bookServices";
 import { useEffect, useState } from "react";
-import { FaRegTrashAlt } from "react-icons/fa";
+import { FaRegTrashAlt, FaArrowRight, FaBookOpen } from "react-icons/fa";
+import { motion } from "framer-motion";
 
 export function Resume() {
-    const { cart, total, setTotal, deleteItem, changeQuantityItems } =
-        useCart();
+    const { cart, total, deleteItem, changeQuantityItems,setTotal } = useCart();
     const [books, setBooks] = useState([]);
+    const [loading, setLoading] = useState(true);
 
-    // useEffect para obtener los detalles de los libros en el carrito
     useEffect(() => {
-        if (cart?.length > 0) {
-            // Función asincrónica para obtener los libros del carrito
-            const fetchCartBooks = async () => {
-                try {
-                    // Usamos Promise.all para hacer peticiones de los libros en paralelo
-                    const fetchedBooks = await Promise.all(
-                        cart.map(async (item) => {
-                            try {
-                                // Obtenemos el libro por su ID
-                                const book = await fetchBooksById(item.id);
-                                // Actualizamos el total del carrito según el precio del libro y la cantidad
-                                setTotal(
-                                    (prev) =>
-                                        prev +
-                                        book.purchasePrice * item.quantity
-                                );
-                                return { ...book, quantity: item.quantity };
-                            } catch (error) {
-                                console.error(
-                                    `Error fetching book with ID ${item.id}:`,
-                                    error
-                                );
-                                return null; // Si hay error al obtener el libro, retornamos null
-                            }
-                        })
-                    );
-                    // Filtramos los resultados para eliminar los libros que no se pudieron obtener
-                    setBooks(fetchedBooks.filter((book) => book !== null));
-                } catch (error) {
-                    console.error("Error fetching books:", error);
-                }
-            };
-            fetchCartBooks();
-        }
-    }, [cart, setTotal]);
+        const fetchCartBooks = async () => {
+            try {
+                const fetchedBooks = await Promise.all(
+                    cart.map(async (item) => {
+                        const book = await fetchBooksById(item.id);
+                        setTotal((prev) => prev + book.purchasePrice * item.quantity);
+                        return { ...book, quantity: item.quantity };
+                    })
+                );
+                setBooks(fetchedBooks);
+            } catch (error) {
+                console.error("Error fetching books:", error);
+            } finally {
+                setLoading(false);
+            }
+        };
+        
+        if (cart?.length > 0) fetchCartBooks();
+    }, [cart]);
 
-    // Función para manejar la selección de cantidad de productos
-    const cantSelect = (idItem, value) => {
-        Number(value);
-        const options = [
-            value - 2,
-            value - 1,
-            value,
-            value + 1,
-            value + 2,
-            value + 3,
-            value + 4,
-        ];
-
-        // Manejador de cambios de cantidad
-        const handleChange = (event) =>
-            changeQuantityItems(idItem, Number(event.target.value));
-
-        return (
-            <select value={value} onChange={handleChange}>
-                {options
-                    .filter((option) => option > 0) // Filtramos las opciones para evitar valores negativos
-                    .map((option) => (
-                        <option key={option} value={option}>
-                            {option}
-                        </option>
-                    ))}
-            </select>
-        );
+    const updateQuantity = (id, newQuantity) => {
+        if (newQuantity > 0) changeQuantityItems(id, newQuantity);
     };
 
-    // Si no hay productos en el carrito, mostramos un mensaje
+    if (loading) {
+        return (
+            <div className="max-w-4xl mx-auto p-6 animate-pulse space-y-8">
+                {[...Array(3)].map((_, i) => (
+                    <div key={i} className="h-32 bg-background-secondary rounded-xl" />
+                ))}
+            </div>
+        );
+    }
+
     if (!cart || cart.length === 0) {
         return (
-            <p className="text-center bg-[var(--background-main)] p-6">
-                NO TIENE PRODUCTOS EN EL CARRITO
-            </p>
+            <div className="max-w-4xl mx-auto p-12 text-center">
+                <div className="inline-block p-6 bg-background-secondary rounded-2xl">
+                    <FaBookOpen className="mx-auto text-4xl text-text-secondary mb-4" />
+                    <h2 className="text-xl font-semibold text-text-primary">
+                        Tu carrito está vacío
+                    </h2>
+                    <p className="text-text-secondary mt-2">
+                        Explora nuestro catálogo para encontrar libros increíbles
+                    </p>
+                </div>
+            </div>
         );
     }
 
     return (
-        <div className=" p-6">
-            <div className="my-20 max-w-4xl mx-auto bg-[var(--background-secondary)] rounded-lg shadow-lg">
-                {/* Encabezado del carrito */}
-                <header className="text-center py-4">
-                    <h1 className="text-2xl font-bold text-[var(--espresso-brown)]">
-                        Tu Carrito
-                    </h1>
+        <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="max-w-4xl mx-auto p-6"
+        >
+            <div className="space-y-8">
+                <header className="text-center space-y-2">
+                    <h1 className="text-3xl font-bold text-text-primary">Tu Carrito</h1>
+                    <p className="text-text-secondary">
+                        {cart.length} {cart.length > 1 ? "artículos" : "artículo"} en tu carrito
+                    </p>
                 </header>
 
-                {/* Resumen del pedido */}
-                <div className="bg-[var(--soft-taupe)] p-4 rounded-md">
-                    <h2 className="font-semibold text-lg text-[var(--text-primary)]">
-                        Resumen del Pedido
-                    </h2>
-                    <p className="text-sm text-[var(--text-secondary)]">
-                        {cart.length === 1
-                            ? "Tienes 1 libro en tu carrito"
-                            : `Tienes ${cart.length} libros en tu carrito`}
-                    </p>
+                <div className="space-y-6">
+                    {books.map((book) => (
+                        <div 
+                            key={book.id}
+                            className="flex gap-4 p-4 bg-background-secondary rounded-xl"
+                        >
+                            <div className="relative w-24 h-32 flex-shrink-0">
+                                <img
+                                    src={book.cover}
+                                    alt={book.title}
+                                    fill
+                                    className="object-cover rounded-lg"
+                                />
+                            </div>
+                            
+                            <div className="flex-1 space-y-2">
+                                <h3 className="font-semibold text-text-primary">{book.title}</h3>
+                                <p className="text-sm text-text-secondary">{book.author?.name}</p>
+                                
+                                <div className="flex items-center gap-4">
+                                    <div className="flex items-center border border-border-light rounded-lg">
+                                        <button
+                                            onClick={() => updateQuantity(book.id, book.quantity - 1)}
+                                            className="px-3 py-1 hover:bg-background-main"
+                                        >
+                                            -
+                                        </button>
+                                        <span className="px-3">{book.quantity}</span>
+                                        <button
+                                            onClick={() => updateQuantity(book.id, book.quantity + 1)}
+                                            className="px-3 py-1 hover:bg-background-main"
+                                        >
+                                            +
+                                        </button>
+                                    </div>
+                                    
+                                    <button
+                                        onClick={() => deleteItem(book.id)}
+                                        className="text-error hover:text-error-dark flex items-center gap-2"
+                                    >
+                                        <FaRegTrashAlt />
+                                        <span className="text-sm">Eliminar</span>
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <div className="text-right space-y-2">
+                                <p className="text-lg font-semibold text-text-primary">
+                                    ${(book.purchasePrice * book.quantity).toFixed(2)}
+                                </p>
+                                <p className="text-sm text-text-secondary">
+                                    ${book.purchasePrice} c/u
+                                </p>
+                            </div>
+                        </div>
+                    ))}
                 </div>
 
-                {/* Tabla con los detalles del carrito */}
-                <table className="w-full mt-4 border-collapse">
-                    <thead>
-                        <tr className="text-left border-b border-[var(--border-light)]">
-                            {[
-                                "Portada",
-                                "Título",
-                                "Autor",
-                                "Precio",
-                                "Cantidad",
-                                "Subtotal",
-                                "",
-                            ].map((header) => (
-                                <th
-                                    key={header}
-                                    className="py-2 px-4 text-[var(--text-secondary)]"
-                                >
-                                    {header}
-                                </th>
-                            ))}
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {books.map((book) => (
-                            <tr
-                                key={book.id}
-                                className="border-b border-[var(--border-light)]"
-                            >
-                                <td className="py-2 px-4">
-                                    <img
-                                        src={book.cover}
-                                        alt={book.title}
-                                        className="w-16 h-20 flex items-center justify-center rounded-lg border border-[var(--border-dark)]"
-                                    />
-                                </td>
-                                <td className="py-2 px-4 text-[var(--text-primary)]">
-                                    {book.title}
-                                </td>
-                                <td className="py-2 px-4 text-[var(--text-primary)]">
-                                    {book.author?.name}
-                                </td>
-                                <td className="py-2 px-4 text-[var(--text-primary)]">
-                                    ${book.purchasePrice}
-                                </td>
-                                {/* Muestra  el selector para cambiar la cantidad */}
-                                <td className="py-2 px-4 text-[var(--text-primary)]">
-                                    {cantSelect(book.id, book.quantity)}
-                                </td>
-                                <td className="py-2 px-4 text-[var(--text-primary)]">
-                                    ${book.purchasePrice * book.quantity}
-                                </td>
-                                <td className="py-2 px-4 text-[var(--text-primary)]">
-                                    {/* Botón para eliminar el producto del carrito */}
-                                    <button
-                                        type="button"
-                                        onClick={() => deleteItem(book.id)}
-                                    >
-                                        <FaRegTrashAlt
-                                            className="text-[var(--text-primary)] cursor-pointer"
-                                            title="Eliminar del carrito"
-                                        />
-                                    </button>
-                                </td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
-
-                {/* Total y botones para continuar explorando o proceder al pago */}
-                <div className="p-4 bg-[var(--soft-taupe)] flex justify-between items-center">
-                    <span className="text-lg font-bold text-[var(--text-primary)]">
-                        Total: ${total}
-                    </span>
-                    <div className="flex gap-4">
+                <div className="sticky bottom-0 bg-background-main pt-6 border-t border-border-light">
+                    <div className="flex justify-between items-center mb-6">
+                        <h3 className="text-xl font-semibold text-text-primary">Total:</h3>
+                        <span className="text-2xl font-bold text-primary">${total.toFixed(2)}</span>
+                    </div>
+                    
+                    <div className="grid grid-cols-2 gap-4">
                         <a
                             href="/catalog"
-                            className="bg-[var(--button-secondary-bg)] text-[var(--button-secondary-text)] py-2 px-4 rounded-md hover:bg-[var(--hover-gray)]"
+                            className="flex items-center justify-center gap-2 p-3 border border-primary text-primary rounded-lg hover:bg-primary/10"
                         >
-                            Seguir Explorando
+                            Seguir Comprando
                         </a>
                         <a
                             href="?step=2"
-                            className="bg-[var(--button-primary-bg)] text-[var(--button-primary-text)] py-2 px-4 rounded-md hover:bg-[var(--hover-brown)]"
+                            className="flex items-center justify-center gap-2 p-3 bg-primary text-white rounded-lg hover:bg-primary-dark"
                         >
-                            Proceder al Pago
+                            Continuar al Pago
+                            <FaArrowRight />
                         </a>
                     </div>
                 </div>
             </div>
-        </div>
+        </motion.div>
     );
 }

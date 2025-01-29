@@ -1,59 +1,93 @@
+import { FaFacebook, FaInstagram, FaLinkedin, FaTwitter } from "react-icons/fa";
+
 export function Footer() {
     return (
-        <footer className="bg-espresso-brown text-parchment-cream py-8 mb-0 mt-auto">
-            <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 px-4">
-                <div>
-                    <h2 className="text-lg font-bold">Biblioteca Elegante</h2>
-                    <p className="mt-2 text-warm-gray">
-                        Tu destino para el conocimiento y la imaginación.
-                    </p>
-                </div>
-
-                <div>
-                    <h2 className="text-lg font-bold">Enlaces Rápidos</h2>
-                    <ul className="mt-2 space-y-2">
-                        <li>
-                            <a
-                                href="#"
-                                className="text-parchment-cream hover:text-hover-gray transition"
-                            >
-                                Catálogo en Línea
-                            </a>
-                        </li>
-                        <li>
-                            <a
-                                href="#"
-                                className="text-parchment-cream hover:text-hover-gray transition"
-                            >
-                                Horarios y Ubicación
-                            </a>
-                        </li>
-                        <li>
-                            <a
-                                href="#"
-                                className="text-parchment-cream hover:text-hover-gray transition"
-                            >
-                                Preguntas Frecuentes
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-
-                <div>
-                    <h2 className="text-lg font-bold">Contáctanos</h2>
-                    <p className="mt-2 text-warm-gray">
-                        123 Calle Principal, Ciudad
-                        <br />
-                        Teléfono: (123) 456-7890
-                        <br />
-                        Email: info@bibliotecaelegante.com
-                    </p>
-                </div>
+      <footer className="mt-auto border-t border-border-light bg-background-secondary text-parchment-cream">
+        <div className="container py-12">
+          <div className="grid grid-cols-1 gap-8 md:grid-cols-4">
+            {/* Logo y descripción */}
+            <div className="space-y-4">
+              <h3 className="text-xl font-bold">Biblioteca Elegante</h3>
+              <p className="text-sm text-parchment-cream/80">
+                Tu portal al conocimiento desde 2024
+              </p>
             </div>
 
-            <div className="border-t border-border-dark mt-8 pt-4 text-center text-warm-gray text-sm">
-                © 2025 Biblioteca Elegante. Todos los derechos reservados.
+            {/* Enlaces rápidos */}
+            <div className="space-y-4">
+              <h4 className="text-lg font-semibold">Explorar</h4>
+              <nav className="space-y-2">
+                {['Catálogo', 'Eventos', 'Blog', 'Sobre Nosotros'].map((item) => (
+                  <a
+                    key={item}
+                    href="#"
+                    className="block text-sm transition-colors hover:text-primary-hover"
+                  >
+                    {item}
+                  </a>
+                ))}
+              </nav>
             </div>
-        </footer>
+
+            {/* Contacto */}
+            <div className="space-y-4">
+              <h4 className="text-lg font-semibold">Contacto</h4>
+              <div className="space-y-2 text-sm">
+                <p>📞 +57 123 456 7890</p>
+                <p>✉️ contacto@biblioteca.com</p>
+                <p>📍 Carrera 123 #45-67, Bogotá</p>
+              </div>
+            </div>
+
+            {/* Redes Sociales */}
+            <div className="space-y-4">
+              <h4 className="text-lg font-semibold">Síguenos</h4>
+              <div className="flex gap-4">
+                {['Facebook', 'Twitter', 'Instagram', 'LinkedIn'].map((network) => (
+                  <a
+                    key={network}
+                    href="#"
+                    className="rounded-full bg-background-secondary p-2 transition-colors hover:bg-primary-hover"
+                  >
+                    <span className="sr-only">{network}</span>
+                    <SocialIcon network={network} />
+                  </a>
+                ))}
+              </div>
+              
+              {/* Newsletter */}
+              <div className="mt-4 space-y-2">
+                <p className="text-sm">Suscríbete a nuestro boletín</p>
+                <div className="flex gap-2">
+                  <input
+                    type="email"
+                    placeholder="tu@email.com"
+                    className="w-full rounded-lg border border-border-light bg-background-main px-3 py-2 text-sm text-text-primary"
+                  />
+                  <button className="rounded-lg bg-primary px-4 py-2 text-sm transition-colors hover:bg-primary-hover">
+                    Enviar
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Copyright */}
+          <div className="mt-8 border-t border-border-light pt-6 text-center text-sm text-parchment-cream/60">
+            © 2024 Biblioteca Elegante. Todos los derechos reservados.
+          </div>
+        </div>
+      </footer>
     );
 }
+
+const SocialIcon = ({ network }) => {
+    const icons = {
+      Facebook: <FaFacebook className="h-5 w-5" />,
+      Twitter: <FaTwitter className="h-5 w-5" />,
+      Instagram: <FaInstagram className="h-5 w-5" />,
+      LinkedIn: <FaLinkedin className="h-5 w-5" />,
+    };
+
+    return icons[network] || null;
+};

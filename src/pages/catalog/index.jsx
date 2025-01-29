@@ -1,73 +1,111 @@
 import { BookCard } from "@/components/Books/BookCard";
 import { books } from "@/components/Books/Bookjson";
-import { BookList } from "@/components/Books/BookList";
 import React, { useState } from "react";
-import { CiSearch } from "react-icons/ci";
+import { FiSearch, FiX } from "react-icons/fi";
+import { motion } from "framer-motion";
 
 const CatalogPage = () => {
-    // Estado para el tab seleccionado
     const [activeTab, setActiveTab] = useState("Todos");
+    const [searchQuery, setSearchQuery] = useState("");
+    
+    const categories = [
+        "Todos",
+        "Ficción",
+        "No Ficción",
+        "Ciencia", 
+        "Historia",
+        "Biografías"
+    ];
 
-    // Función para manejar el cambio de tab
-    const handleTabClick = (tab) => {
-        setActiveTab(tab);
-    };
+    const filteredBooks = books.filter(book => {
+        const matchesCategory = activeTab === "Todos" || book.category === activeTab;
+        const matchesSearch = book.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                             book.author.toLowerCase().includes(searchQuery.toLowerCase());
+        return matchesCategory && matchesSearch;
+    });
 
     return (
-        <div className="p-4">
-            <h1 className="text-center text-2xl font-semibold mb-6">
-                Catálogo de libros
-            </h1>
+        <div className="min-h-screen bg-background-main p-4 md:p-8">
+            {/* Encabezado */}
+            <div className="max-w-7xl mx-auto text-center mb-8">
+                <motion.h1 
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="text-4xl font-bold text-text-primary mb-4"
+                >
+                    Explora Nuestro Catálogo
+                </motion.h1>
+                <p className="text-text-secondary max-w-2xl mx-auto">
+                    Descubre más de 10,000 títulos disponibles en nuestra colección
+                </p>
+            </div>
 
-            {/* BUSCADOR */}
-            <div className="flex justify-center w-full mt-4 mb-6">
-                <div className="flex flex-row relative w-full max-w-4xl">
-                    <CiSearch className="absolute ml-5 top-4 text-gray-400" />
+            {/* Barra de búsqueda */}
+            <div className="max-w-4xl mx-auto mb-8">
+                <div className="relative">
                     <input
-                        className="outline-none py-3 pr-0 pl-12 w-full border border-gray-300 rounded-md focus:outline-gray-100"
-                        type="text"
-                        placeholder="Buscar libro"
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                        placeholder="Buscar libros o autores..."
+                        className="w-full pl-12 pr-12 py-4 rounded-full border border-border-light focus:ring-2 focus:ring-primary focus:outline-none bg-background-main"
                     />
-                    <button
-                        type="button"
-                        className="absolute top-px right-0 px-4 py-3 bg-button-primary-bg text-button-primary-text rounded-l-sm rounded-md hover:bg-hover-brown"
-                    >
-                        Buscar
-                    </button>
+                    <FiSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-text-secondary text-xl" />
+                    {searchQuery && (
+                        <button 
+                            onClick={() => setSearchQuery("")}
+                            className="absolute right-4 top-1/2 -translate-y-1/2 text-text-secondary hover:text-primary"
+                        >
+                            <FiX className="text-xl" />
+                        </button>
+                    )}
                 </div>
             </div>
 
-            {/* TABS */}
-            <div className="flex justify-center mx-auto max-w-4xl bg-gray-100 rounded-md shadow-md">
-                <ul className="flex flex-row justify-around w-full text-sm text-gray-600">
-                    {[
-                        "Todos",
-                        "Ficción",
-                        "No Ficción",
-                        "Ciencia",
-                        "Historia",
-                        "Biografías",
-                    ].map((tab) => (
-                        <li
-                            key={tab}
-                            className={`px-4 py-2 cursor-pointer ${
-                                activeTab === tab ||
-                                (!activeTab && tab === "Todos")
-                                    ? "border-b-2 border-rich-tan text-rich-tan font-medium"
-                                    : "hover:text-rich-tan"
+            {/* Filtros */}
+            <div className="max-w-4xl mx-auto mb-8">
+                <div className="flex flex-wrap gap-2">
+                    {categories.map((category) => (
+                        <button
+                            key={category}
+                            onClick={() => setActiveTab(category)}
+                            className={`px-4 py-2 rounded-full transition-colors ${
+                                activeTab === category
+                                    ? "bg-primary text-white"
+                                    : "bg-background-secondary text-text-secondary hover:bg-background-dark"
                             }`}
-                            onClick={() => handleTabClick(tab)}
                         >
-                            {tab}
-                        </li>
+                            {category}
+                        </button>
                     ))}
-                </ul>
+                </div>
             </div>
 
-            {/* CONTENIDO DINÁMICO */}
-            <div className="mt-6 text-center">
-                <BookList books={books} category={activeTab} />
-            </div>
+            {/* Resultados */}
+            <motion.div 
+                layout
+                className="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6"
+            >
+                {filteredBooks.map((book) => (
+                    <BookCard 
+                        key={book.id} 
+                        books={[book]} 
+                        category={activeTab} 
+                    />
+                ))}
+            </motion.div>
+
+            {/* Sin resultados */}
+            {filteredBooks.length === 0 && (
+                <div className="max-w-2xl mx-auto text-center py-12">
+                    <div className="text-6xl mb-4">📚</div>
+                    <h3 className="text-xl font-semibold text-text-primary mb-2">
+                        No encontramos resultados
+                    </h3>
+                    <p className="text-text-secondary">
+                        Intenta con otros términos de búsqueda o selecciona otra categoría
+                    </p>
+                </div>
+            )}
         </div>
     );
 };

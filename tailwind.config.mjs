@@ -9,54 +9,40 @@ export default {
     "./node_modules/@heroui/theme/dist/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
+    container: {
+      center: true,
+      padding: "2rem",
+    },
     extend: {
       colors: {
-        // Colores principales
-        'espresso-brown': 'var(--espresso-brown)',
-        'library-green': 'var(--library-green)',
-        'parchment-cream': 'var(--parchment-cream)',
-
-        // Colores secundarios
-        'warm-gray': 'var(--warm-gray)',
-        'soft-taupe': 'var(--soft-taupe)',
-        'rich-tan': 'var(--rich-tan)',
-
-        // Colores de hover
-        'hover-brown': 'var(--hover-brown)',
-        'hover-green': 'var(--hover-green)',
-        'hover-gray': 'var(--hover-gray)',
-
-        // Colores de texto
-        'text-primary': 'var(--text-primary)',
-        'text-secondary': 'var(--text-secondary)',
-        'text-highlight': 'var(--text-highlight)',
-
-        // Colores de fondo
-        'background-main': 'var(--background-main)',
-        'background-secondary': 'var(--background-secondary)',
-        'background-dark': 'var(--background-dark)',
-
-        // Colores de bordes
-        'border-light': 'var(--border-light)',
-        'border-dark': 'var(--border-dark)',
-
-        // Colores de estado
-        'success-green': 'var(--success-green)',
-        'warning-amber': 'var(--warning-amber)',
-        'error-red': 'var(--error-red)',
-
-        // Colores de botones
-        'button-primary-bg': 'var(--button-primary-bg)',
-        'button-primary-text': 'var(--button-primary-text)',
-        'button-secondary-bg': 'var(--button-secondary-bg)',
-        'button-secondary-text': 'var(--button-secondary-text)',
-
-        // Colores de sombras
-        'shadow-light': 'var(--shadow-light)',
-        'shadow-medium': 'var(--shadow-medium)',
-        'shadow-dark': 'var(--shadow-dark)',
+        primary: {
+          DEFAULT: "var(--espresso-brown)",
+          hover: "var(--hover-brown)",
+        },
+        secondary: {
+          DEFAULT: "var(--library-green)",
+          hover: "var(--hover-green)",
+        },
+        background: {
+          main: "var(--background-main)",
+          secondary: "var(--background-secondary)",
+          dark: "var(--background-dark)",
+        },
+        text: {
+          primary: "var(--text-primary)",
+          secondary: "var(--text-secondary)",
+          highlight: "var(--text-highlight)",
+        },
       },
-      // Otros estilos personalizados que quieras agregar
+      boxShadow: {
+        "elevation-1": "0 2px 8px var(--shadow-light)",
+        "elevation-2": "0 4px 16px var(--shadow-medium)",
+        "elevation-3": "0 8px 24px var(--shadow-dark)",
+      },
+      transitionProperty: {
+        height: "height",
+        spacing: "margin, padding",
+      },
     },
   },
   darkMode: "class",
