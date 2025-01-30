@@ -12,7 +12,7 @@ export default function Account() {
     const { logout } = useAuth();
 
     return (
-        <div className="min-h-screen bg-background-main py-8">
+        <div className=" bg-background-main py-20">
             <div className="container max-w-4xl">
                 <Card className="shadow-elevation-2">
                     <CardBody className="p-6">
